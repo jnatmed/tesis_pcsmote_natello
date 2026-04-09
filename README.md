@@ -1,46 +1,51 @@
-# PC-SMOTE: Una variante de SMOTE controlada por percentiles 
+# PC-SMOTE: Una variante de SMOTE controlada por percentiles
 
 Este repositorio contiene la implementación y los experimentos asociados a la tesina de grado **"PC-SMOTE: Una variante de SMOTE controlada por percentiles"** (2026), presentada por **Juan Natello** en la Universidad Nacional de Luján.
 
-El proyecto aborda el desafío del desbalance de clases en el aprendizaje automático supervisado, introduciendo un algoritmo de **doble acción** fundamentado en la autocalibración geométrica.
+El proyecto estudia el desbalance de clases en aprendizaje automático supervisado mediante una heurística geométrica basada en percentiles, orientada a regular la selección de semillas y la generación de muestras sintéticas según la estructura local de cada dataset.
 
-## 📝 Resumen del Proyecto
+## Resumen del Proyecto
 
-PC-SMOTE (Percentile-Controlled SMOTE) se distingue de los métodos tradicionales al actuar no solo como un generador dinámico de datos sintéticos en zonas seguras, sino también como un **escudo protector topológico** (sensor de inviabilidad). El algoritmo evalúa la morfología de cada clase mediante percentiles y filtros de pureza sustentados en entropía, frenando la interpolación en escenarios de solapamiento extremo para evitar la inyección de ruido perjudicial.
+PC-SMOTE (Percentile-Controlled SMOTE) es una variante de SMOTE que calibra radios de densidad y riesgo a partir de percentiles de distancias observadas, filtra semillas candidatas mediante densidad, riesgo y pureza local, y solo entonces interpola nuevas muestras sintéticas. En los experimentos de la tesis, este enfoque mostró mejoras en escenarios con separabilidad local suficiente y un comportamiento más conservador cuando la vecindad no resultó favorable para la interpolación.
 
-### 🛠️ Fases del Algoritmo PC-SMOTE
+En algunos datasets, una tasa alta de rechazo de semillas también aportó una señal empírica útil sobre la conveniencia de sobremuestrear. En este repositorio esa lectura se mantiene como un hallazgo experimental discutido en la tesis, no como una afirmación universal sobre el método.
 
-1.  **Fase 1: Auto-calibración Geométrica**: Utiliza percentiles dinámicos para definir radios de vecindad adaptativos (densidad y riesgo), ajustándose a la morfología específica de cada conjunto de datos.
-2.  **Fase 2: Filtros Topológicos**: Evalúa cada punto de la clase minoritaria mediante filtros de densidad, riesgo y pureza (basada en entropía de Shannon). Las muestras que superan estos filtros se consideran "semillas válidas".
-3.  **Fase 3: Generación Adaptativa**: Realiza la interpolación lineal entre semillas válidas y sus vecinos seguros, controlando el factor de sobregeneralización para mantener la integridad de las fronteras de decisión.
+### Fases del Algoritmo PC-SMOTE
+
+1. **Fase 1: Definición heurística de radios mediante percentiles**: estima radios de densidad y riesgo a partir de la distribución empírica de distancias entre instancias minoritarias y sus vecinos más cercanos.
+2. **Fase 2: Filtros geométricos de semillas**: evalúa cada semilla candidata según densidad, riesgo y pureza local (por proporción o entropía) antes de autorizar la interpolación.
+3. **Fase 3: Generación adaptativa**: genera ejemplos sintéticos solo a partir de semillas aprobadas y vecinos de la misma clase ubicados dentro de una región considerada segura.
 
 ---
 
-## 📂 Estructura del Repositorio
+## Estructura del Repositorio
 
 El repositorio está organizado siguiendo el pipeline de experimentación descrito en la tesis:
 
--   📁 [**`datasets/`**](datasets/README.md): Gestión de fuentes de datos, carga y análisis exploratorio inicial.
--   📁 [**`scripts/`**](scripts/README.md): Implementación central del algoritmo PC-SMOTE, limpieza con Isolation Forest y herramientas de evaluación.
--   📁 [**`notebooks/`**](notebooks/README.md): Experimentación, búsqueda de hiperparámetros y validación comparativa.
--   📁 [**`resultados/`**](resultados/README.md): Logs detallados, tablas de métricas final y mejores parámetros obtenidos.
+- [**`datasets/`**](datasets/README.md): gestión de fuentes de datos, carga y análisis exploratorio inicial.
+- [**`scripts/`**](scripts/README.md): implementación central del algoritmo PC-SMOTE, limpieza opcional con Isolation Forest y herramientas de evaluación.
+- [**`notebooks/`**](notebooks/README.md): experimentación, búsqueda de hiperparámetros y validación comparativa.
+- [**`resultados/`**](resultados/README.md): logs detallados, tablas finales de métricas y mejores parámetros obtenidos.
 
 ---
 
-## 🔬 Metodología de Validación
+## Metodología de Validación
 
 Los experimentos siguen un pipeline estandarizado:
-1.  División de datos en Train/Test.
-2.  Escalado mediante `RobustScaler`.
-3.  Detección y limpieza de ruido con `Isolation Forest`.
-4.  Sobremuestreo comparativo (Original vs SMOTE vs Borderline-SMOTE vs ADASYN vs PC-SMOTE).
-5.  Entrenamiento de un clasificador *Random Forest*.
-6.  Evaluación mediante la métrica **F1-macro average** para garantizar una medición equitativa ante el desbalance severo.
 
-## 📄 Referencias
+1. División de datos en train/test.
+2. Escalado mediante `RobustScaler`.
+3. Limpieza opcional con `Isolation Forest`, según la configuración evaluada.
+4. Sobremuestreo comparativo (Original vs SMOTE vs Borderline-SMOTE vs ADASYN vs PC-SMOTE).
+5. Entrenamiento de un clasificador `Random Forest`.
+6. Evaluación mediante la métrica **F1-macro average**, junto con otras métricas de apoyo para interpretar el comportamiento de cada técnica.
+
+## Referencias
 
 Para una comprensión profunda de los fundamentos teóricos y matemáticos, consulte el archivo:
--   `tesis_natello_pcsmote.pdf`: Documento completo con el marco teórico, formalización algorítmica y discusión de resultados experimentales.
+
+- `tesis_natello_pcsmote.pdf`: documento completo con el marco teórico, la formalización algorítmica y la discusión de resultados experimentales.
 
 ---
-*Desarrollado como parte de la Tesina de Grado para la Licenciatura en Sistemas de Información - UNLu (2026).*
+
+Desarrollado como parte de la Tesina de Grado para la Licenciatura en Sistemas de Información - UNLu (2026).
