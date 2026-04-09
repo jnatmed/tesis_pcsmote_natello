@@ -8,7 +8,7 @@ El proyecto estudia el desbalance de clases en aprendizaje automático supervisa
 
 PC-SMOTE (Percentile-Controlled SMOTE) es una variante de SMOTE que calibra radios de densidad y riesgo a partir de percentiles de distancias observadas, filtra semillas candidatas mediante densidad, riesgo y pureza local, y solo entonces interpola nuevas muestras sintéticas. En los experimentos de la tesis, este enfoque mostró mejoras en escenarios con separabilidad local suficiente y un comportamiento más conservador cuando la vecindad no resultó favorable para la interpolación.
 
-En algunos datasets, una tasa alta de rechazo de semillas también aportó una señal empírica útil sobre la conveniencia de sobremuestrear. En este repositorio esa lectura se mantiene como un hallazgo experimental discutido en la tesis, no como una afirmación universal sobre el método.
+En algunos datasets, una tasa alta de rechazo de semillas también sugirió que la conveniencia de sobremuestrear depende de la geometría local observada. Por eso, la narrativa del repositorio presenta ese comportamiento en clave exploratoria y apoyada en los resultados experimentales de la tesis.
 
 ### Fases del Algoritmo PC-SMOTE
 
