@@ -24,21 +24,23 @@ El repositorio está organizado siguiendo el pipeline de experimentación descri
 
 - [**`datasets/`**](datasets/README.md): gestión de fuentes de datos, carga y análisis exploratorio inicial.
 - [**`scripts/`**](scripts/README.md): implementación central del algoritmo PC-SMOTE, limpieza opcional con Isolation Forest y herramientas de evaluación.
-- [**`notebooks/`**](notebooks/README.md): experimentación, búsqueda de hiperparámetros y validación comparativa.
+- [**`notebooks/`**](notebooks/README.md): experimentación con Random Forest bajo hiperparámetros fijos, validación comparativa y extensiones con modelos alternativos.
 - [**`resultados/`**](resultados/README.md): logs detallados, tablas finales de métricas y mejores parámetros obtenidos.
 
 ---
 
 ## Metodología de Validación
 
-Los experimentos siguen un pipeline estandarizado:
+Los experimentos finales siguen un pipeline estandarizado orientado a aislar el efecto del sobremuestreo. Para ello, el clasificador `Random Forest` se ejecuta con hiperparámetros fijos en todas las condiciones, de modo que las diferencias observadas se atribuyan a la estrategia de remuestreo y no al ajuste del modelo.
 
 1. División de datos en train/test.
 2. Escalado mediante `RobustScaler`.
 3. Limpieza opcional con `Isolation Forest`, según la configuración evaluada.
-4. Sobremuestreo comparativo (Original vs SMOTE vs Borderline-SMOTE vs ADASYN vs PC-SMOTE).
-5. Entrenamiento de un clasificador `Random Forest`.
+4. Construcción de versiones comparables del conjunto de entrenamiento: original, SMOTE, Borderline-SMOTE, ADASYN y PC-SMOTE.
+5. Entrenamiento de un clasificador `Random Forest` con hiperparámetros fijos.
 6. Evaluación mediante la métrica **F1-macro average**, junto con otras métricas de apoyo para interpretar el comportamiento de cada técnica.
+
+Como extensión complementaria, el repositorio también incluye experimentos con modelos alternativos y datasets sobremuestreados mediante técnicas contemporáneas (`Radius-SMOTE`, `LD-SMOTE` y `VS-SMOTE`). Estos materiales amplían la validación del código, aunque el eje metodológico de la tesis se apoya en la comparación con `Random Forest` fijo.
 
 ## Referencias
 
